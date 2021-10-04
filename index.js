@@ -2,7 +2,6 @@ const express = require ("express")
 const mongoose =require ("mongoose")
 const server = express ()
 const cors = require("cors")
-const bodyParser = require ("body-parser")
 const port = process.env.PORT || 5000 
 
 
@@ -12,13 +11,16 @@ require ("dotenv").config()
 const condidats = require ("./routes/api/condidats")
 const employees = require ("./routes/api/employees")
 const rh =require ("./routes/api/rh")
-//const { application } = require("express")
-console.log(port)
+
+
+
 server.use(cors({
   origin: 'http://localhost:3000'
 }))
-server.use(bodyParser.urlencoded({extended:false}))
-server.use(bodyParser.json())
+
+server.use(cors()) 
+server.use(express.json ({limit:'25mb'}));
+server.use(express.urlencoded({limit:'25mb',extended:true}))
 
 //connect to MongoDB
 mongoose.connect(
@@ -39,4 +41,4 @@ server.use("/api/rh",rh)
 server.use("/api/condidats",condidats)
 server.use("/api/employees",employees)
 
-server.listen(port | 5000, () => console.log ("server working"))
+server.listen(port | 5000, () => console.log ("server working on port : " + port))
